@@ -7,8 +7,22 @@ st.set_page_config(
     layout="centered"
 )
 
+with st.sidebar:
+    st.title("🤖 AI Recruit")
+
+    st.markdown("### Features")
+    st.write("✅ Resume Parsing")
+    st.write("✅ Skill Matching")
+    st.write("✅ AI Suggestions")
+    st.write("✅ Interview Questions")
+
+    st.divider()
+
+    st.success("Developed by")
+    st.write("**Sai Gullapudi**")
+    
 st.title("🤖 AI Recruitment Assistant")
-st.write("Upload your resume and compare it with a job description.")
+st.caption("Analyze your resume, compare it with a job description, and get AI-powered insights.")
 
 uploaded_file = st.file_uploader(
     "📄 Upload Resume (PDF)",
@@ -74,6 +88,7 @@ if st.button("Analyze Resume"):
             st.stop()
 
     st.success("✅ Analysis Complete")
+    st.balloons()
 
     # ----------------------------
     # Resume Match Score
@@ -81,42 +96,47 @@ if st.button("Analyze Resume"):
     if "similarity_score" in result:
         score = float(result["similarity_score"])
 
-        st.subheader("🎯 Resume Match Score")
-        st.metric("Similarity", f"{score:.2f}%")
-        st.progress(min(int(score), 100))
+        col1, col2, col3 = st.columns(3)
+
+        col1.metric("🎯 Match Score", f"{score:.2f}%")
+        col2.metric("✅ Matched", len(result["matched_skills"]))
+        col3.metric("❌ Missing", len(result["missing_skills"]))
+
+        st.progress(score / 100)  
 
     # ----------------------------
     # Matched Skills
     # ----------------------------
-    st.subheader("✅ Matched Skills")
-
-    matched = result.get("matched_skills", [])
+    with st.expander("✅ Matched Skills", expanded=True):
+     matched = result.get("matched_skills", [])
 
     if matched:
-        for skill in matched:
-            st.success(skill.title())
+        cols = st.columns(2)
+
+        for i, skill in enumerate(matched):
+            cols[i % 2].success(skill.title())
     else:
         st.info("No matched skills found.")
 
     # ----------------------------
     # Missing Skills
     # ----------------------------
-    st.subheader("❌ Missing Skills")
-
-    missing = result.get("missing_skills", [])
+    with st.expander("❌ Missing Skills"):
+     missing = result.get("missing_skills", [])
 
     if missing:
-        for skill in missing:
-            st.warning(skill.title())
+        cols = st.columns(2)
+
+        for i, skill in enumerate(missing):
+            cols[i % 2].warning(skill.title())
     else:
         st.success("No missing skills.")
 
     # ----------------------------
     # Suggestions
     # ----------------------------
-    st.subheader("💡 Suggestions")
-
-    suggestions = result.get("suggestions", [])
+    with st.expander("💡 Suggestions"):
+     suggestions = result.get("suggestions", [])
 
     if suggestions:
         for suggestion in suggestions:
@@ -127,11 +147,16 @@ if st.button("Analyze Resume"):
     # ----------------------------
     # Interview Questions
     # ----------------------------
-    st.subheader("🎤 AI Interview Questions")
-
-    questions = result.get("interview_questions", "")
+    with st.expander("🎤 AI Interview Questions", expanded=True):
+     questions = result.get("interview_questions", "")
 
     if questions:
         st.markdown(questions)
     else:
         st.info("No interview questions generated.")
+
+    st.divider()
+
+    st.caption(
+    "🚀 Developed using FastAPI • Streamlit • Scikit-learn • Gemini AI"
+    )
