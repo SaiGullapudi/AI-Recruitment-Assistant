@@ -14,7 +14,7 @@ job_description = st.text_area(
     "Paste Job Description",
     height=200
 )
-BACKEND_URL = "https://ai-recruitment-assistant.onrender.com/"
+BACKEND_URL = "https://ai-recruitment-assistant.onrender.com"
 if st.button("Analyze Resume"):
 
     if uploaded_file is not None:
@@ -32,6 +32,9 @@ if st.button("Analyze Resume"):
             files=files
         )
         
+
+        st.write("Status Code:", upload_response.status_code)
+        st.write("Response:", upload_response.text)
 
         resume_text = upload_response.json()["resume_text"]
 
