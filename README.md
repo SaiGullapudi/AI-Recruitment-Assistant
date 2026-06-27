@@ -97,3 +97,5 @@ streamlit run app.py
 B.Tech – Artificial Intelligence & Machine Learning
 
 GitHub: https://github.com/SaiGullapudi
+
+Linkedin: https://www.linkedin.com/in/gullapudi-naga-sai-someswara-gupta-607a2432a
