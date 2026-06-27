@@ -145,7 +145,7 @@ def match_resume(data: MatchRequest):
     data.job_description
     )
     return {
-    "match_score": round(similarity * 100, 2),
+    "similarity_score": round(similarity * 100, 2),
     "matched_skills": matched_skills,
     "missing_skills": missing_skills,
     "suggestions": suggestions,
